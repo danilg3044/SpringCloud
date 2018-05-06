@@ -23,11 +23,11 @@
 	</properties>
 
 	<modules>
-		<module>config-service</module>
-		<module>discovery-service</module>
-		<module>gateway-service</module>
-		<module>student-service</module>
-		<module>course-service</module>
+		<module>ConfigService</module>
+		<module>DiscoveryService</module>
+		<module>GatewayService</module>
+		<module>StudentService</module>
+		<module>CourseService</module>
 	</modules>
 
 	<dependencies>
@@ -67,8 +67,19 @@
 		    <version>2.7.0</version>		
 		  </dependency>
 		  
-		  
 	</dependencies>
+	
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-dependencies</artifactId>
+				<version>${spring-cloud.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 	
 	<build>
 		<plugins>
