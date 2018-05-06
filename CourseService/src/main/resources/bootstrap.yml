@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: ${COURSE_SERVICE_NAME:course-service}
+
+  cloud:
+    config:
+      uri: http://${CONFIG_SERVICE_NAME:localhost}:${CONFIG_SERVER_PORT:8888}
+      fail-fast: true
+    

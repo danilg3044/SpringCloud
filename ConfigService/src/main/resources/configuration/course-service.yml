@@ -1,0 +1,21 @@
+server:
+  port: ${COURSE_SERVER_PORT:8081}
+
+eureka:
+  instance:
+    leaseRenewalIntervalInSeconds: 1
+    leaseExpirationDurationInSeconds: 2
+  client:
+    serviceUrl:
+      defaultZone: http://${DISCOVERY_SERVICE_NAME:localhost}:${DISCOVERY_SERVER_PORT:8761}/eureka/
+    healthcheck:
+      enabled: true
+    lease:
+      duration: 5
+
+#spring:
+#  profiles: cloud
+
+management:
+  security:
+    enabled: false

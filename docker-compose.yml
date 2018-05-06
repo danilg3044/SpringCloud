@@ -1,0 +1,139 @@
+version: '3.0'
+services:
+
+# ___________________________________________________
+ 
+  config-service:
+    image: dckr117/config-service-image:1.0.0
+    restart: always
+      
+    #ports:
+    #  - 8888:8888
+      
+    healthcheck:
+      test: "curl -f config-service:8888/health"
+      interval: 8s
+      retries: 120
+      
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "10"
+
+        
+ # ___________________________________________________       
+ 
+  discovery-service:
+    image: dckr117/discovery-service-image:1.0.0
+    restart: always
+    environment:
+      CONFIG_SERVICE_NAME: $CONFIG_SERVICE_NAME
+      CONFIG_SERVER_PORT: $CONFIG_SERVER_PORT      
+    ports:
+      - "8761:${DISCOVERY_SERVER_PORT}"
+      
+    healthcheck:
+      test: "curl -f discovery-service:8761/health"
+      interval: 8s
+      retries: 120
+      
+    depends_on:
+      - config-service
+      
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "10"
+     
+
+ # ___________________________________________________    
+ 
+  gateway-service:
+    image: dckr117/gateway-service-image:1.0.0
+    restart: always
+    environment:
+      CONFIG_SERVICE_NAME: $CONFIG_SERVICE_NAME
+      CONFIG_SERVER_PORT: $CONFIG_SERVER_PORT   
+      STUDENT_SERVICE_NAME: $STUDENT_SERVICE_NAME 
+      STUDENT_SERVER_PORT: $STUDENT_SERVER_PORT   
+      COURSE_SERVICE_NAME: $COURSE_SERVICE_NAME 
+      COURSE_SERVER_PORT: $COURSE_SERVER_PORT   
+    ports:
+      - "8080:${GATEWAY_SERVER_PORT}"
+      
+    healthcheck:
+      test: "curl -f gateway-service:8080/health"
+      interval: 8s
+      retries: 120
+      
+    depends_on:
+      - config-service
+      - discovery-service
+      
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "10"
+
+           
+ # ___________________________________________________    
+ 
+  course-service:
+    image: dckr117/course-service-image:1.0.0
+    restart: always
+    environment:
+      CONFIG_SERVICE_NAME: $CONFIG_SERVICE_NAME
+      CONFIG_SERVER_PORT: $CONFIG_SERVER_PORT
+      DISCOVERY_SERVICE_NAME: $DISCOVERY_SERVICE_NAME 
+      DISCOVERY_SERVER_PORT: $DISCOVERY_SERVER_PORT
+      COURSE_SERVICE_NAME: $COURSE_SERVICE_NAME 
+      COURSE_SERVER_PORT: $COURSE_SERVER_PORT   
+    ports:
+      - "8081:${COURSE_SERVER_PORT}"
+      
+    healthcheck:
+      test: "curl -f course-service:8081/health"
+      interval: 8s
+      retries: 120
+      
+    depends_on:
+      - config-service
+      - discovery-service
+      - gateway-service
+      
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "10"
+        
+                  
+ # ___________________________________________________    
+ 
+  student-service:
+    image: dckr117/student-service-image:1.0.0
+    restart: always
+    environment:
+      CONFIG_SERVICE_NAME: $CONFIG_SERVICE_NAME
+      CONFIG_SERVER_PORT: $CONFIG_SERVER_PORT
+      DISCOVERY_SERVICE_NAME: $DISCOVERY_SERVICE_NAME 
+      DISCOVERY_SERVER_PORT: $DISCOVERY_SERVER_PORT
+      STUDENT_SERVICE_NAME: $STUDENT_SERVICE_NAME 
+      STUDENT_SERVER_PORT: $STUDENT_SERVER_PORT   
+    ports:
+      - "8082:${STUDENT_SERVER_PORT}"
+      
+    healthcheck:
+      test: "curl -f student-service:8082/health"
+      interval: 8s
+      retries: 120
+      
+    depends_on:
+      - config-service
+      - discovery-service
+      - gateway-service
+      
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "10"
+

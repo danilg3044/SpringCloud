@@ -1,0 +1,59 @@
+server:
+  port: ${GATEWAY_SERVER_PORT:8080}
+
+#ribbon:
+#  eureka:
+#    enabled: false
+
+   
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 10000
+      circuitBreaker:
+        enabled:  true
+        sleepWindowInMilliseconds: 5000
+        errorThresholdPercentage: 50
+      fallback:
+        enabled:  true
+
+management:
+  security:
+    enabled: false
+    
+zuul:
+  routes:
+    course:
+      path: /course/**
+      url: http://${COURSE_SERVICE_NAME:localhost}:${COURSE_SERVER_PORT:8081}
+      # service id from discovery service - doesn't work
+      #serviceId: ${COURSE_SERVICE_NAME:course-service}
+      
+    student:
+      path: /student/**
+      url: http://${STUDENT_SERVICE_NAME:localhost}:${STUDENT_SERVER_PORT:8082}
+      # service id from discovery service - doesn't work
+      #serviceId: ${STUDENT_SERVICE_NAME:student-service} 
+  
+      
+# Discovery service integration insttead of zuul.routes ...
+# Swagger doesn't work for this case, probable some adjustment is required in swagger.* package
+
+#eureka:
+#  instance:
+#    leaseRenewalIntervalInSeconds: 1
+#    leaseExpirationDurationInSeconds: 2
+#  client:
+#    serviceUrl:
+#      defaultZone: http://${DISCOVERY_SERVICE_NAME:localhost}:${DISCOVERY_SERVER_PORT:8761}/eureka/
+#    fetchRegistry: true
+#    registerWithEureka: false
+#    healthcheck:
+#      enabled: true
+#    lease:
+#      duration: 5
+ 
+      

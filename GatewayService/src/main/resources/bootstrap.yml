@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: ${GATEWAY_SERVICE_NAME:gateway-service}
+  cloud:
+    config:
+      uri: http://${CONFIG_SERVICE_NAME:localhost}:${CONFIG_SERVER_PORT:8888}
+      fail-fast: true
