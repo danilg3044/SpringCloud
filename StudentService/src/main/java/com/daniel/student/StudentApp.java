@@ -30,9 +30,9 @@ import org.springframework.web.client.RestTemplate;
 import com.daniel.config.SwaggerConfig;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 
-// http://localhost:8090/swagger-ui.html
-// http://localhost:8090/v2/api-docs
-// http://localhost:8090/hystrix -> enter http://localhost:8090/hystrix.stream
+// http://localhost:8082/swagger-ui.html
+// http://localhost:8082/v2/api-docs
+// http://localhost:8082/hystrix -> enter http://localhost:8082/hystrix.stream
 
 @RestController
 @SpringBootApplication
