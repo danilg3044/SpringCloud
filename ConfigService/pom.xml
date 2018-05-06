@@ -41,7 +41,7 @@
 		      </execution>
 		    </executions>
 		  </plugin>
-	    <plugin>
+	    <plugin><!-- mvn clean package docker:build --><!-- mvn clean package docker:build -DpushImageTag -->
 	      <groupId>com.spotify</groupId>
 	      <artifactId>docker-maven-plugin</artifactId>
 	      <version>1.0.0</version>
@@ -72,5 +72,5 @@
 	      </configuration>
 	    </plugin>
 	  </plugins>
-</build>
+   </build>
 </project>
